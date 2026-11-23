@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#03040b">
+  <meta name="description" content="A rotating Christmas tree made of stars, light, and falling snow.">
+  <title>heppy Christmas cjn</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Georgia, "Times New Roman", serif;
+      background: #03040b;
+      color: #fff;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { width: 100%; min-width: 320px; min-height: 100%; margin: 0; }
+
+    body {
+      min-height: 100svh;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 54%, rgb(12 17 42 / 66%), transparent 57%),
+        #03040b;
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      min-height: 100svh;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    #sky {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+    }
+
+    .message {
+      position: absolute;
+      z-index: 1;
+      top: clamp(22px, 5vh, 48px);
+      right: 18px;
+      left: 18px;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .message h1 {
+      margin: 0;
+      color: #fff8f4;
+      font-size: clamp(27px, 5vw, 48px);
+      font-weight: 400;
+      letter-spacing: 0.035em;
+      line-height: 1.08;
+      text-shadow: 0 0 14px rgb(255 226 240 / 72%), 0 0 38px rgb(171 106 255 / 54%);
+    }
+
+    .message p {
+      margin: 9px 0 0;
+      color: rgb(244 221 255 / 85%);
+      font-family: Arial, sans-serif;
+      font-size: clamp(11px, 1.55vw, 15px);
+      font-weight: 400;
+      letter-spacing: 0.34em;
+      text-shadow: 0 0 13px rgb(194 140 255 / 65%);
+    }
+
+    .signature {
+      position: absolute;
+      z-index: 1;
+      right: max(22px, env(safe-area-inset-right));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      color: rgb(222 231 239 / 65%);
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .signature::before {
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      margin: 0 9px 4px 0;
+      background: rgb(230 198 127 / 70%);
+      content: "";
+    }
+
+    .music-panel {
+      position: absolute;
+      z-index: 2;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      left: max(18px, env(safe-area-inset-left));
+      max-width: calc(100% - 104px);
+      font-family: Arial, sans-serif;
+    }
+
+    .music-toggle {
+      display: inline-flex;
+      min-height: 38px;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 13px;
+      border: 1px solid rgb(224 194 255 / 32%);
+      border-radius: 999px;
+      background: rgb(9 9 23 / 74%);
+      color: #f7eaff;
+      font: inherit;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: border-color 160ms ease, background-color 160ms ease;
+    }
+
+    .music-toggle:hover,
+    .music-toggle:focus-visible {
+      border-color: rgb(239 214 255 / 78%);
+      background: rgb(24 15 43 / 88%);
+    }
+
+    .music-toggle:focus-visible { outline: 2px solid #e8c8ff; outline-offset: 3px; }
+
+    .music-icon {
+      color: #ffd6ef;
+      font-size: 14px;
+    }
+
+    .music-status {
+      margin: 5px 0 0 12px;
+      color: rgb(238 226 250 / 73%);
+      font-size: 10px;
+    }
+
+    #christmas-song { display: none; }
+
+    @media (max-height: 520px) {
+      .message { top: 14px; }
+      .message h1 { font-size: clamp(24px, 5vh, 34px); }
+      .message p { margin-top: 5px; }
+      .music-panel { bottom: 10px; }
+      .music-status { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .message h1 { text-shadow: 0 0 10px rgb(255 226 240 / 55%); }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene" aria-label="A rotating, particle-made Christmas tree in falling snow">
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <header class="message">
+      <h1>Merry Christmas</h1>
+      <p>heppy Christmas cjn</p>
+    </header>
+    <section class="music-panel" aria-label="林俊杰《愿与愁》音乐播放器">
+      <button class="music-toggle" type="button" aria-label="播放林俊杰《愿与愁》" aria-pressed="false">
+        <span class="music-icon" aria-hidden="true">♪</span>
+        <span class="music-label">播放《愿与愁》</span>
+      </button>
+      <p class="music-status" aria-live="polite">点击播放林俊杰《愿与愁》</p>
+      <audio id="christmas-song" preload="none" src="assets/jjlin-wish-and-worry.mp3"></audio>
+    </section>
+    <span class="signature">fdx</span>
+  </main>
+  <script>
+    (() => {
+      const song = document.getElementById("christmas-song");
+      const musicToggle = document.querySelector(".music-toggle");
+      const musicIcon = document.querySelector(".music-icon");
+      const musicLabel = document.querySelector(".music-label");
+      const musicStatus = document.querySelector(".music-status");
+
+      function syncMusicControls() {
+        const playing = !song.paused && !song.ended;
+        musicToggle.setAttribute("aria-pressed", String(playing));
+        musicToggle.setAttribute("aria-label", `${playing ? "暂停" : "播放"}林俊杰《愿与愁》`);
+        musicIcon.textContent = playing ? "Ⅱ" : "♪";
+        musicLabel.textContent = `${playing ? "暂停" : "播放"}《愿与愁》`;
+        musicStatus.textContent = song.ended
+          ? "播放结束"
+          : playing ? "正在播放林俊杰《愿与愁》" : "点击播放林俊杰《愿与愁》";
+      }
+
+      musicToggle.addEventListener("click", async () => {
+        if (!song.paused) {
+          song.pause();
+          return;
+        }
+        musicStatus.textContent = "正在载入歌曲…";
+        try {
+          await song.play();
+        } catch (error) {
+          musicStatus.textContent = "无法播放，请检查本地音频文件。";
+          console.error("Song playback failed.", error);
+        }
+      });
+      song.addEventListener("play", syncMusicControls);
+      song.addEventListener("pause", syncMusicControls);
+      song.addEventListener("ended", syncMusicControls);
+
+      const canvas = document.getElementById("sky");
+      const context = canvas.getContext("2d", { alpha: false });
+      const backgroundCanvas = document.createElement("canvas");
+      const backgroundContext = backgroundCanvas.getContext("2d", { alpha: false });
+      const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const tau = Math.PI * 2;
+      const treeHeight = 12;
+      const treePoints = [];
+      const groundPoints = [];
+      const skyPoints = [];
+      const heartPoints = [];
+      const snowflakes = [];
+      const largeSnowflakes = [];
+      const treePalette = Array.from({ length: 8 }, (_, index) =>
+        `rgb(255, ${155 + index * 13}, ${185 + index * 10})`
+      );
+      const heartPalette = ["#ff88bd", "#ff9aca", "#ffacd3", "#ffc0dd", "#ffd2e7", "#ffe3f2"];
+      const particlePalette = [...treePalette, ...heartPalette];
+      const depthBuckets = Array.from({ length: 32 }, () =>
+        Array.from({ length: particlePalette.length * 2 }, () => [])
+      );
+      const drawItemPool = [];
+      let width = 0;
+      let height = 0;
+      let pixelRatio = 1;
+      let focalLength = 1;
+      let cameraDistance = 13;
+      let cameraHeight = 6;
+      let pitch = -0.25;
+      const pitchCosine = Math.cos(pitch);
+      const pitchSine = Math.sin(pitch);
+      let groundScale = 1;
+      let startTime = 0;
+      let previousTime = 0;
+
+      const random = (min, max) => min + Math.random() * (max - min);
+
+      function gaussian(mean, deviation) {
+        const sample = Math.max(0.0001, Math.random());
+        return mean + Math.sqrt(-2 * Math.log(sample)) * Math.cos(tau * Math.random()) * deviation;
+      }
+
+      function createTree() {
+        treePoints.length = 0;
+        const total = Math.min(width >= 900 ? 3000 : 4800, Math.max(2500, Math.round(width * height / 72)));
+        const spiralCount = Math.round(total * 0.7);
+
+        for (let index = 0; index < spiralCount; index += 1) {
+          const u = Math.random();
+          const level = Math.pow(u, 1.6);
+          const y = treeHeight * level + 0.2;
+          let radius = Math.pow(1 - level, 1.1) * 3.2;
+          const branchWave = Math.max(0, Math.sin((level * 5.8 + 0.15) * tau));
+          radius *= 1 + branchWave * 0.65;
+          const angle = u * 9 * tau + random(-0.22, 0.22);
+          radius *= random(0.85, 1.08);
+          const midGlow = Math.max(0.15, 1 - Math.abs(level - 0.55) * 1.5);
+          let green = Math.min(255, 155 + Math.round(90 * midGlow) + Math.round(random(-15, 20)));
+          let blue = Math.min(255, 185 + Math.round(70 * midGlow) + Math.round(random(-15, 35)));
+
+          if (Math.random() < 0.08) {
+            green = 220 + Math.round(Math.random() * 35);
+            blue = 230 + Math.round(Math.random() * 25);
+          }
+          const colorIndex = Math.max(0, Math.min(treePalette.length - 1, Math.round((green + blue - 340) / 18)));
+          treePoints.push({
+            x: Math.cos(angle) * radius,
+            y,
+            z: Math.sin(angle) * radius,
+            colorIndex,
+            glow: index % 20 === 0
+          });
+        }
+
+        for (let index = spiralCount; index < total; index += 1) {
+          const level = Math.pow(Math.random(), 1.9);
+          const y = treeHeight * level + 0.2 + random(-0.08, 0.08);
+          let radius = Math.pow(1 - level, 1.1) * 4.3;
+          const branchWave = Math.max(0, Math.sin((level * 5.8 + 0.15) * tau));
+          radius *= (1 + branchWave * 0.65) * Math.sqrt(Math.random());
+          const angle = Math.random() * tau;
+          const green = Math.round(random(165, 225));
+          const blue = Math.round(random(190, 250));
+          const colorIndex = Math.min(treePalette.length - 1, Math.round((green + blue - 340) / 18));
+          treePoints.push({
+            x: Math.cos(angle) * radius + random(-0.08, 0.08),
+            y,
+            z: Math.sin(angle) * radius + random(-0.08, 0.08),
+            colorIndex,
+            glow: Math.random() < 0.006
+          });
+        }
+      }
+
+      function createGround() {
+        groundPoints.length = 0;
+        const count = Math.min(1100, Math.max(360, Math.round(width * height / 420)));
+        const rings = [4.6, 6, 7.4, 8.8, 10.2, 11.4];
+
+        for (let index = 0; index < count; index += 1) {
+          const ring = rings[Math.floor(Math.random() * rings.length)] * groundScale;
+          const radius = gaussian(ring, 0.22 * groundScale);
+          const angle = Math.random() * tau;
+          const shade = Math.round(random(190, Math.random() < 0.15 ? 255 : 235));
+          groundPoints.push({
+            x: Math.cos(angle) * radius,
+            y: -0.25,
+            z: Math.sin(angle) * radius,
+            color: `rgb(${shade}, ${shade}, 255)`
+          });
+        }
+      }
+
+      function createSky() {
+        skyPoints.length = 0;
+        const count = Math.min(520, Math.max(160, Math.round(width * height / 1400)));
+        for (let index = 0; index < count; index += 1) {
+          const shade = Math.round(random(215, 255));
+          skyPoints.push({
+            x: random(-18, 18),
+            y: random(3, 18),
+            z: random(-18, 18),
+            color: `rgb(${shade}, ${shade}, 255)`
+          });
+        }
+      }
+
+      function createHeart() {
+        heartPoints.length = 0;
+        const count = Math.min(340, Math.max(150, Math.round(width * height / 2400)));
+        while (heartPoints.length < count) {
+          const x = random(-1.3, 1.3);
+          const y = random(-1.4, 1.4);
+          if (Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y > 0) continue;
+
+          const distance = Math.hypot(x, y);
+          heartPoints.push({
+            x: x * 0.72,
+            y: treeHeight + 0.05 + (y + 1) * 0.45,
+            z: random(-0.18, 0.18),
+            colorIndex: Math.max(0, Math.min(heartPalette.length - 1, Math.floor(distance / 1.9 * heartPalette.length))),
+            glow: heartPoints.length % 8 === 0
+          });
+        }
+      }
+
+      function createSnow() {
+        snowflakes.length = 0;
+        largeSnowflakes.length = 0;
+        const count = Math.min(180, Math.max(90, Math.round(width * height / 3600)));
+        for (let index = 0; index < count; index += 1) {
+          snowflakes.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: random(0.7, 1.7),
+            speed: random(27, 68),
+            drift: random(6, 18),
+            phase: random(0, tau)
+          });
+        }
+
+        const largeCount = Math.min(10, Math.max(6, Math.round(width / 150)));
+        for (let index = 0; index < largeCount; index += 1) {
+          const y = random(0, height);
+          largeSnowflakes.push({
+            x: random(0, width),
+            y,
+            radius: random(5.5, 9.5),
+            speed: random(34, 49),
+            life: random(0, (height + 90 - y) / 34),
+            angle: random(0, tau)
+          });
+        }
+      }
+
+      function resize() {
+        const bounds = canvas.getBoundingClientRect();
+        width = bounds.width;
+        height = bounds.height;
+        pixelRatio = Math.min(window.devicePixelRatio || 1, width >= 900 ? 1 : 2);
+        canvas.width = Math.round(width * pixelRatio);
+        canvas.height = Math.round(height * pixelRatio);
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        backgroundCanvas.width = canvas.width;
+        backgroundCanvas.height = canvas.height;
+        backgroundContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        focalLength = Math.min(width * 0.82, height * 0.63);
+        groundScale = Math.min(1, width / 620);
+        createTree();
+        createGround();
+        createSky();
+        createHeart();
+        createSnow();
+        drawBackground();
+      }
+
+      function project(point, rotation, output) {
+        const rotatedX = point.x * rotation.cosine - point.z * rotation.sine;
+        const rotatedZ = point.x * rotation.sine + point.z * rotation.cosine;
+        const projectedY = point.y * pitchCosine - rotatedZ * pitchSine - cameraHeight;
+        const depth = point.y * pitchSine + rotatedZ * pitchCosine + cameraDistance;
+        if (depth <= 0.1) return null;
+
+        const scale = focalLength / depth;
+        const projected = output || {};
+        projected.x = width / 2 + rotatedX * scale;
+        projected.y = height / 2 - projectedY * scale;
+        projected.depth = depth;
+        projected.size = Math.max(0.75, Math.min(2.6, 3.6 - depth * 0.13));
+        return projected;
+      }
+
+      function drawGroundRings(rotation, target) {
+        const radii = [4.6, 6, 7.4, 8.8, 10.2, 11.4];
+        target.save();
+        target.lineWidth = Math.max(0.7, width / 1200);
+        target.shadowColor = "#8ea7ff";
+        target.shadowBlur = Math.min(13, width / 60);
+        for (let ring = 0; ring < radii.length; ring += 1) {
+          target.beginPath();
+          for (let step = 0; step <= 120; step += 1) {
+            const theta = (step / 120) * tau;
+            const point = project({
+              x: Math.cos(theta) * radii[ring] * groundScale,
+              y: -0.25,
+              z: Math.sin(theta) * radii[ring] * groundScale
+            }, rotation);
+            if (!point) continue;
+            if (step === 0) target.moveTo(point.x, point.y);
+            else target.lineTo(point.x, point.y);
+          }
+          target.strokeStyle = ring % 2 === 0
+            ? `rgba(174, 193, 255, ${0.38 + ring * 0.035})`
+            : `rgba(209, 157, 255, ${0.34 + ring * 0.025})`;
+          target.stroke();
+        }
+        target.restore();
+      }
+
+      function drawBackground() {
+        const rotation = { cosine: 1, sine: 0 };
+        backgroundContext.fillStyle = "#03040b";
+        backgroundContext.fillRect(0, 0, width, height);
+
+        for (const point of skyPoints) {
+          const projected = project(point, rotation);
+          if (!projected) continue;
+          backgroundContext.fillStyle = point.color;
+          backgroundContext.beginPath();
+          backgroundContext.arc(projected.x, projected.y, projected.size, 0, tau);
+          backgroundContext.fill();
+        }
+
+        drawGroundRings(rotation, backgroundContext);
+        for (const point of groundPoints) {
+          const projected = project(point, rotation);
+          if (!projected) continue;
+          backgroundContext.fillStyle = point.color;
+          backgroundContext.beginPath();
+          backgroundContext.arc(projected.x, projected.y, projected.size, 0, tau);
+          backgroundContext.fill();
+        }
+      }
+
+      function drawScene(timestamp) {
+        const delta = previousTime ? Math.min((timestamp - previousTime) / 1000, 0.05) : 0;
+        previousTime = timestamp;
+        if (!startTime) startTime = timestamp;
+        const time = (timestamp - startTime) / 1000;
+        const cycleDuration = 18;
+        const cycleTime = time % cycleDuration;
+        const revealProgress = Math.min(1, cycleTime / 12);
+        let treeOpacity = cycleTime > 16 ? 1 - (cycleTime - 16) / 2 : 1;
+        if (revealProgress < 0.04) treeOpacity *= revealProgress / 0.04;
+        const revealCutoff = 0.2 + treeHeight * (1 - revealProgress);
+        const angle = motionPreference.matches ? 0 : time * 0.12;
+        const rotation = { cosine: Math.cos(angle), sine: Math.sin(angle) };
+        canvas.dataset.treeReveal = revealProgress.toFixed(3);
+        context.drawImage(backgroundCanvas, 0, 0, width, height);
+
+        for (const bucket of depthBuckets) {
+          for (const colorGroup of bucket) colorGroup.length = 0;
+        }
+        let drawItemCount = 0;
+        for (const point of treePoints) {
+          if (point.y < revealCutoff) continue;
+          drawItemCount = queuePoint(point, rotation, "tree", treeOpacity, drawItemCount);
+        }
+        for (const point of heartPoints) {
+          if (revealProgress < 0.985) continue;
+          drawItemCount = queuePoint(point, rotation, "heart", treeOpacity, drawItemCount);
+        }
+
+        for (let bin = depthBuckets.length - 1; bin >= 0; bin -= 1) {
+          const bucket = depthBuckets[bin];
+          for (let colorGroup = 0; colorGroup < bucket.length; colorGroup += 1) {
+            const points = bucket[colorGroup];
+            if (points.length === 0) continue;
+            const paletteIndex = Math.floor(colorGroup / 2);
+            const glowing = colorGroup % 2 === 1;
+            context.fillStyle = particlePalette[paletteIndex];
+            context.globalAlpha = points[0].opacity;
+            context.shadowColor = glowing ? particlePalette[paletteIndex] : "transparent";
+            context.shadowBlur = glowing ? (paletteIndex >= treePalette.length ? 7 : 2.5) : 0;
+            context.beginPath();
+            for (const point of points) {
+              context.moveTo(point.x + point.size, point.y);
+              context.arc(point.x, point.y, point.size, 0, tau);
+            }
+            context.fill();
+          }
+        }
+        context.shadowBlur = 0;
+        context.globalAlpha = 1;
+        drawSnow(time, delta);
+        window.requestAnimationFrame(drawScene);
+      }
+
+      function queuePoint(point, rotation, group, opacity, itemIndex) {
+        const item = drawItemPool[itemIndex] || (drawItemPool[itemIndex] = {});
+        if (!project(point, rotation, item)) return itemIndex;
+        if (item.x < -4 || item.x > width + 4 || item.y < -4 || item.y > height + 4) return itemIndex;
+        const paletteIndex = point.colorIndex + (group === "heart" ? treePalette.length : 0);
+        item.paletteIndex = paletteIndex;
+        item.opacity = opacity;
+        const groupIndex = paletteIndex * 2 + Number(point.glow);
+        const binIndex = Math.min(depthBuckets.length - 1, Math.floor(item.depth / 40 * depthBuckets.length));
+        depthBuckets[binIndex][groupIndex].push(item);
+        return itemIndex + 1;
+      }
+
+      function drawHexSnowflake(flake) {
+        context.save();
+        context.translate(flake.x, flake.y);
+        context.rotate(flake.angle);
+        context.strokeStyle = "rgba(242, 249, 255, 0.9)";
+        context.lineWidth = Math.max(0.8, flake.radius * 0.105);
+        context.lineCap = "round";
+        context.shadowColor = "#d9eaff";
+        context.shadowBlur = 5;
+
+        for (let arm = 0; arm < 6; arm += 1) {
+          context.save();
+          context.rotate((arm * tau) / 6);
+          context.beginPath();
+          context.moveTo(0, 0);
+          context.lineTo(0, -flake.radius);
+          for (const fraction of [0.48, 0.72]) {
+            const branchLength = flake.radius * (0.32 - fraction * 0.12);
+            for (const direction of [-1, 1]) {
+              context.moveTo(0, -flake.radius * fraction);
+              context.lineTo(
+                direction * branchLength * Math.sin(Math.PI / 4),
+                -flake.radius * fraction - branchLength * Math.cos(Math.PI / 4)
+              );
+            }
+          }
+          context.stroke();
+          context.restore();
+        }
+
+        context.fillStyle = "#fff";
+        context.beginPath();
+        context.arc(0, 0, Math.max(0.8, flake.radius * 0.1), 0, tau);
+        context.fill();
+        context.restore();
+      }
+
+      function drawSnow(time, delta) {
+        context.save();
+        context.shadowColor = "#d9eaff";
+        context.shadowBlur = 4;
+        for (const flake of snowflakes) {
+          const x = (flake.x + Math.sin(time * 0.72 + flake.phase) * flake.drift + width) % width;
+          const y = (flake.y + time * flake.speed) % height;
+          context.globalAlpha = 0.62 + flake.radius * 0.13;
+          context.fillStyle = "#edf6ff";
+          context.beginPath();
+          context.arc(x, y, flake.radius, 0, tau);
+          context.fill();
+        }
+
+        for (const flake of largeSnowflakes) {
+          if (!motionPreference.matches) {
+            flake.y += flake.speed * delta;
+            flake.life -= delta;
+            flake.angle += delta * 0.08;
+          }
+          if (flake.y > height + 28 || flake.life <= 0) {
+            flake.x = random(0, width);
+            flake.y = random(-90, -15);
+            flake.radius = random(5.5, 9.5);
+            flake.speed = random(34, 49);
+            flake.life = (height + 90 - flake.y) / flake.speed;
+            flake.angle = random(0, tau);
+          }
+          context.globalAlpha = 0.58;
+          drawHexSnowflake(flake);
+        }
+        context.restore();
+      }
+
+      window.addEventListener("resize", resize, { passive: true });
+      resize();
+      window.requestAnimationFrame(drawScene);
+    })();
+  </script>
+</body>
+</html>
